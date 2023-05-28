@@ -1,23 +1,22 @@
 package src.com.minis.context;
 
-import src.com.minis.beans.BeansException;
 import src.com.minis.beans.BeanFactory;
+import src.com.minis.beans.BeansException;
 import src.com.minis.beans.SimpleBeanFactory;
-import src.com.minis.beans.BeanDefinition;
 import src.com.minis.beans.XmlBeanDefinitionReader;
 import src.com.minis.core.ClassPathXmlResource;
 
-public class ClassPathXmlApplicationContext implements BeanFactory{
-    BeanFactory beanFactory;
+public class ClassPathXmlApplicationContext implements BeanFactory,ApplicationEventPublisher{
+    SimpleBeanFactory beanFactory;
     //context负责整合容器的启动过程，读外部配置，解析Bean定义，创建BeanFactory
     public ClassPathXmlApplicationContext(String fileName){
         // 解析 XML 文件中的内容
         ClassPathXmlResource resource = new ClassPathXmlResource(fileName);
-        BeanFactory beanFactory = new SimpleBeanFactory();
-        XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
+        SimpleBeanFactory bf = new SimpleBeanFactory();
+        XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(bf);
         // 加载解析的内容，构建 BeanDefinition
         reader.loadBeanDefinitions(resource);
-        this.beanFactory = beanFactory;
+        this.beanFactory = bf;
     }
 
     /**
@@ -32,8 +31,36 @@ public class ClassPathXmlApplicationContext implements BeanFactory{
     }
 
     @Override
-    public void registerBeanDefinition(BeanDefinition beanDefinition) {
-        this.beanFactory.registerBeanDefinition(beanDefinition);
+    public Boolean containsBean(String name) {
+        return this.beanFactory.containsBean(name);
+    }
+
+    @Override
+    public void registerBean(String beanName, Object obj) {
+        this.beanFactory.registerBean(beanName, obj);
+    }
+
+    @Override
+    public void publishEvent(ApplicationEvent event) {
+
+    }
+
+    @Override
+    public boolean isSingleton(String name) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean isPrototype(String name) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public Class<?> getType(String name) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

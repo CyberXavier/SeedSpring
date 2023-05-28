@@ -13,5 +13,11 @@ public class Test1 {
             throw new RuntimeException(e);
         }
         aService.sayHello();
+        AServiceImpl a = (AServiceImpl) aService;
+        System.out.println(a.getProperty1());
+        System.out.println(a.getProperty2());
+        System.out.println(a.getName());
+        System.out.println(a.getLevel());
+        System.out.println(a.getClass());
     }
 }
