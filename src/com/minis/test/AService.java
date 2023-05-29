@@ -1,4 +1,4 @@
-package src.com.minis.test;
+package com.minis.test;
 
 
 public interface AService {

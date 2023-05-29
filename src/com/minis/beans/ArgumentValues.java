@@ -1,4 +1,4 @@
-package src.com.minis.beans;
+package com.minis.beans;
 
 import java.util.ArrayList;
 import java.util.List;

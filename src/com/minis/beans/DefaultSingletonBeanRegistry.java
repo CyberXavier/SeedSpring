@@ -1,4 +1,4 @@
-package src.com.minis.beans;
+package com.minis.beans;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +11,22 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry{
     protected List<String> beanNames = new ArrayList<>();
     //容器中存放所有bean实例的map
     protected Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
+
     protected Map<String, Set<String>> dependentBeanMap = new ConcurrentHashMap<>(64);
+
     protected Map<String,Set<String>> dependenciesForBeanMap = new ConcurrentHashMap<>(64);
     @Override
     public void registerSingleton(String beanName, Object singletonObject) {
         synchronized (this.singletonObjects) {
+            Object oldObject = this.singletonObjects.get(beanName);
+            if (oldObject != null) {
+                throw new IllegalStateException("Could not register object [" + singletonObject +
+                        "] under bean name '" + beanName + "': there is already object [" + oldObject + "] bound");
+            }
+
             this.singletonObjects.put(beanName, singletonObject);
             this.beanNames.add(beanName);
+            System.out.println(" bean registerded............. " + beanName);
         }
     }
 

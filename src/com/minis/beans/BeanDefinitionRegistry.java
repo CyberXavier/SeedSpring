@@ -1,4 +1,4 @@
-package src.com.minis.beans;
+package com.minis.beans;
 
 /**
  * 存放 BeanDefinition 的仓库，可以存放、移除、获取及判断 BeanDefinition 对象

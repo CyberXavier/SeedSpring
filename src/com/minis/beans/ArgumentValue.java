@@ -1,4 +1,4 @@
-package src.com.minis.beans;
+package com.minis.beans;
 
 public class ArgumentValue {
     private Object value;

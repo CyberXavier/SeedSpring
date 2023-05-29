@@ -1,15 +1,20 @@
-package src.com.minis.context;
+package com.minis.context;
 
-import src.com.minis.beans.BeanFactory;
-import src.com.minis.beans.BeansException;
-import src.com.minis.beans.SimpleBeanFactory;
-import src.com.minis.beans.XmlBeanDefinitionReader;
-import src.com.minis.core.ClassPathXmlResource;
+import com.minis.beans.BeanFactory;
+import com.minis.beans.BeansException;
+import com.minis.beans.SimpleBeanFactory;
+import com.minis.beans.XmlBeanDefinitionReader;
+import com.minis.core.ClassPathXmlResource;
 
 public class ClassPathXmlApplicationContext implements BeanFactory,ApplicationEventPublisher{
     SimpleBeanFactory beanFactory;
-    //context负责整合容器的启动过程，读外部配置，解析Bean定义，创建BeanFactory
+
     public ClassPathXmlApplicationContext(String fileName){
+        this(fileName, true);
+    }
+
+    //context负责整合容器的启动过程，读外部配置，解析Bean定义，创建BeanFactory
+    public ClassPathXmlApplicationContext(String fileName, boolean isRefresh){
         // 解析 XML 文件中的内容
         ClassPathXmlResource resource = new ClassPathXmlResource(fileName);
         SimpleBeanFactory bf = new SimpleBeanFactory();
@@ -17,6 +22,10 @@ public class ClassPathXmlApplicationContext implements BeanFactory,ApplicationEv
         // 加载解析的内容，构建 BeanDefinition
         reader.loadBeanDefinitions(resource);
         this.beanFactory = bf;
+
+        if (isRefresh) {
+            this.beanFactory.refresh();
+        }
     }
 
     /**

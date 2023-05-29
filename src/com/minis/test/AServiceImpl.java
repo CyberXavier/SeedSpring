@@ -1,4 +1,4 @@
-package src.com.minis.test;
+package com.minis.test;
 
 
 public class AServiceImpl implements AService {
@@ -6,12 +6,23 @@ public class AServiceImpl implements AService {
     private String property2;
     private String name;
     private int level;
+    private BaseService ref1;
+
+    public BaseService getRef1() {
+        return ref1;
+    }
+
+    public void setRef1(BaseService bs) {
+        this.ref1 = bs;
+    }
+
     public AServiceImpl(String name, int level){
         this.name = name;
         this.level = level;
     }
     public void sayHello() {
-        System.out.println("a service 1 say hello");
+        System.out.println(this.property1 + "," + this.property2);
+        ref1.sayHello();
     }
 
     public String getProperty1() {

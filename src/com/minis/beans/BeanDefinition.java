@@ -1,10 +1,10 @@
-package src.com.minis.beans;
+package com.minis.beans;
 
 public class BeanDefinition {
     String SCOPE_SINGLETON = "singleton"; //单例模式
     String SCOPE_PROTOTYPE = "prototype"; //原型模式
     // 表示 Bean 要不要在加载的时候初始化
-    private boolean lazyInit = false;
+    private boolean lazyInit = true;// 设置为false时，循环依赖会报错！XmlBeanDefinitionReader注册一个DefinitionBean后就会调用getBean方法，在循环依赖中注入其他bean时就会报错（原因：没有其他bean的DefinitionBean因此会空指针）。
     // 记录 Bean 之间的依赖关系
     private String[] dependsOn;
     private ArgumentValues constructorArgumentValues;
