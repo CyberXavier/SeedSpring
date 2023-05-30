@@ -3,6 +3,9 @@ package com.minis.test;
 import com.minis.beans.BeansException;
 import com.minis.context.ClassPathXmlApplicationContext;
 
+/**
+ * 循环依赖测试
+ */
 public class Test1 {
     public static void main(String[] args) {
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("beans.xml");
@@ -15,7 +18,7 @@ public class Test1 {
             System.out.println("-----------单独输出-----------");
             bs = (BaseService) ctx.getBean("baseservice");
             System.out.println(bs.getName());
-            bbs = (BaseBaseService) ctx.getBean("basebaseservice");
+            bbs = (BaseBaseService) ctx.getBean("bbs");
             System.out.println(bbs.getName());
         } catch (BeansException e) {
             throw new RuntimeException(e);

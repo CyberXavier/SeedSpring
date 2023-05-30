@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans>
-    <bean id="basebaseservice" class="com.minis.test.BaseBaseService">
+    <bean id="bbs" class="com.minis.test.BaseBaseService">
         <property type="String" name="name" value="我是BaseBaseService"></property>
         <property type="com.minis.test.AServiceImpl" name="as" ref="aservice"/>
     </bean>
@@ -13,7 +13,7 @@
     </bean>
     <bean id="baseservice" class="com.minis.test.BaseService">
         <property type="String" name="name" value="我是baseService"></property>
-        <property type="com.minis.test.BaseBaseService" name="bbs" ref="basebaseservice"/>
+<!--        <property type="com.minis.test.BaseBaseService" name="bbs" ref="basebaseservice"/>-->
     </bean>
 
 

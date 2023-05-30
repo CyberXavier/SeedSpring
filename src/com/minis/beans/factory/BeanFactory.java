@@ -1,4 +1,6 @@
-package com.minis.beans;
+package com.minis.beans.factory;
+
+import com.minis.beans.BeansException;
 
 public interface BeanFactory {
     /**
@@ -14,7 +16,7 @@ public interface BeanFactory {
      * @param name
      * @return
      */
-    Boolean containsBean(String name);
+    boolean containsBean(String name);
 
     /**
      * 注册bean

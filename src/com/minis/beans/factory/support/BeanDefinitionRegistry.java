@@ -1,4 +1,6 @@
-package com.minis.beans;
+package com.minis.beans.factory.support;
+
+import com.minis.beans.factory.config.BeanDefinition;
 
 /**
  * 存放 BeanDefinition 的仓库，可以存放、移除、获取及判断 BeanDefinition 对象

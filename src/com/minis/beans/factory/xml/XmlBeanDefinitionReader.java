@@ -1,5 +1,11 @@
-package com.minis.beans;
+package com.minis.beans.factory.xml;
 
+import com.minis.beans.PropertyValue;
+import com.minis.beans.PropertyValues;
+import com.minis.beans.factory.config.BeanDefinition;
+import com.minis.beans.factory.config.ConstructorArgumentValue;
+import com.minis.beans.factory.config.ConstructorArgumentValues;
+import com.minis.beans.factory.support.AbstractBeanFactory;
 import com.minis.core.Resource;
 import org.dom4j.Element;
 
@@ -10,8 +16,8 @@ import java.util.List;
  * 将解析好的 XML 转换成需要的 BeanDefinition 并注册到 BeanFactory
  */
 public class XmlBeanDefinitionReader {
-    SimpleBeanFactory bf;
-    public XmlBeanDefinitionReader(SimpleBeanFactory bf){
+    AbstractBeanFactory bf;
+    public XmlBeanDefinitionReader(AbstractBeanFactory bf){
         this.bf = bf;
     }
 
@@ -28,12 +34,12 @@ public class XmlBeanDefinitionReader {
 
             //handle constructor
             List<Element> constructorElements = element.elements("constructor-arg");
-            ArgumentValues AVS = new ArgumentValues();
+            ConstructorArgumentValues AVS = new ConstructorArgumentValues();
             for (Element e : constructorElements) {
                 String pType = e.attributeValue("type");
                 String pName = e.attributeValue("name");
                 String pValue = e.attributeValue("value");
-                AVS.addArgumentValue(new ArgumentValue(pType, pName, pValue));
+                AVS.addArgumentValue(new ConstructorArgumentValue(pType, pName, pValue));
             }
             beanDefinition.setConstructorArgumentValues(AVS);
             //end of handle constructor
