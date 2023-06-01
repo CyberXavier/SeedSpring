@@ -3,8 +3,8 @@ package com.minis.beans.factory.support;
 import com.minis.beans.BeansException;
 import com.minis.beans.PropertyValue;
 import com.minis.beans.PropertyValues;
-import com.minis.beans.factory.BeanFactory;
 import com.minis.beans.factory.config.BeanDefinition;
+import com.minis.beans.factory.config.ConfigurableBeanFactory;
 import com.minis.beans.factory.config.ConstructorArgumentValue;
 import com.minis.beans.factory.config.ConstructorArgumentValues;
 
@@ -16,9 +16,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory,BeanDefinitionRegistry {
-    private Map<String, BeanDefinition> beanDefinitionMap = new HashMap<>(256);
-    private List<String> beanDefinitionNames = new ArrayList<>();
+public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory,BeanDefinitionRegistry {
+    protected Map<String, BeanDefinition> beanDefinitionMap = new HashMap<>(256);
+    protected List<String> beanDefinitionNames = new ArrayList<>();
     private final Map<String, Object> earlySingletonObjects = new HashMap<String, Object>(16);
 
     public AbstractBeanFactory(){}
@@ -99,7 +99,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
     public void registerBeanDefinition(String name, BeanDefinition bd) {
         this.beanDefinitionMap.put(name,bd);
         this.beanDefinitionNames.add(name);
-        if (!bd.isLazyInit()) {
+        if (!bd.isLazyInit()) { // 有可能这个第三方Bean的BeanDefinition还没有实例化
             try {
                 getBean(name);
             } catch (BeansException e) {
