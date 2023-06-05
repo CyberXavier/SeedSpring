@@ -1,5 +1,8 @@
 package com.minis.web;
 
+import com.minis.beans.BeansException;
+import com.minis.beans.factory.annotation.Autowired;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -7,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -17,6 +21,8 @@ import java.util.*;
 
 public class DispatcherServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+
+    private WebApplicationContext webApplicationContext;
     private String sContextConfigLocation;
     // 用来存储需要扫描的package
     private List<String> packageNames = new ArrayList<>();
@@ -39,7 +45,8 @@ public class DispatcherServlet extends HttpServlet {
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-
+        this.webApplicationContext = (WebApplicationContext) this.getServletContext()
+                .getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
         sContextConfigLocation = config.getInitParameter("contextConfigLocation");
         URL xmlPath = null;
         try {
@@ -72,13 +79,45 @@ public class DispatcherServlet extends HttpServlet {
             }
             try {
                 obj = clz.newInstance(); //实例化bean
+                // (DI)给mvc管理的bean（controller）的属性中包含@Autowired注解的字段注入值
+                populateBean(obj,controllerName);
                 this.controllerObjs.put(controllerName, obj);
             } catch (InstantiationException e) {
                 throw new RuntimeException(e);
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
+            } catch (BeansException e) {
+                throw new RuntimeException(e);
             }
         }
+    }
+
+    // 处理controller中的@Autowired注解
+    protected Object populateBean(Object bean, String beanName) throws BeansException {
+        Object result = bean;
+
+        Class<?> clazz = bean.getClass();
+        Field[] fields = clazz.getDeclaredFields();
+        if(fields!=null){
+            for(Field field : fields){
+                boolean isAutowired = field.isAnnotationPresent(Autowired.class);
+                if(isAutowired){
+                    String fieldName = field.getName();
+                    Object autowiredObj = this.webApplicationContext.getBean(fieldName);
+                    try {
+                        field.setAccessible(true);
+                        field.set(bean, autowiredObj);
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        }
+
+        return result;
     }
 
     private List<String> scanPackages(List<String> packageNames) {
@@ -137,7 +176,6 @@ public class DispatcherServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String sPath = request.getServletPath();
-        System.out.println("sPath：" + sPath);
         if (!this.urlMappingNames.contains(sPath)) {
             return ;
         }
