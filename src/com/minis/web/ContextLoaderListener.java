@@ -27,7 +27,8 @@ public class ContextLoaderListener implements ServletContextListener {
     private void initWebApplicationContext(ServletContext servletContext) {
         String sContextLocation = servletContext.getInitParameter(CONFIG_LOCATION_PARAM);
         // 将ioc配置文件中的bean加载到ioc容器中了
-        WebApplicationContext wac = new AnnotationConfigWebApplicationContext(sContextLocation);
+//        WebApplicationContext wac = new AnnotationConfigWebApplicationContext(sContextLocation);
+        WebApplicationContext wac = new XmlWebApplicationContext(sContextLocation);
         wac.setServletContext(servletContext);
         this.context = wac;
         servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE,

@@ -5,6 +5,7 @@ import com.minis.web.RequestMapping;
 import com.test.service.BaseService;
 
 public class HelloWorldBean {
+
 	@Autowired
 	BaseService baseservice; //注意这个类时com.test.service包下的不是com.minis.test包下的
 	

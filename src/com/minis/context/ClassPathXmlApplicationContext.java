@@ -47,29 +47,29 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext{
     }
 
     @Override
-    void registerListeners() {
+    public void registerListeners() {
         ApplicationListener listener = new ApplicationListener();
         this.getApplicationEventPublisher().addApplicationListener(listener);
     }
 
     @Override
-    void initApplicationEventPublisher() {
+    public void initApplicationEventPublisher() {
         ApplicationEventPublisher aep = new SimpleApplicationEventPublisher();
         this.setApplicationEventPublisher(aep);
     }
 
     @Override
-    void postProcessBeanFactory(ConfigurableListableBeanFactory bf) {
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory bf) {
 
     }
 
     @Override
-    void registerBeanPostProcessors(ConfigurableListableBeanFactory bf) {
+    public void registerBeanPostProcessors(ConfigurableListableBeanFactory bf) {
         this.beanFactory.addBeanPostProcessor(new AutowiredAnnotationBeanPostProcessor());
     }
 
     @Override
-    void onRefresh() {
+    public void onRefresh() {
         this.beanFactory.refresh();
     }
 
@@ -84,7 +84,7 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext{
     }
 
     @Override
-    void finishRefresh() {
+    public void finishRefresh() {
         publishEvent(new ContextRefreshEvent("Context Refreshed..."));
     }
 

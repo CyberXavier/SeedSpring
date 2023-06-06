@@ -41,6 +41,10 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
             if (singleton == null) {
                 System.out.println("get bean null -------------- " + beanName);
                 BeanDefinition bd = beanDefinitionMap.get(beanName);
+                // 在webApplication环境中没有当前bean的定义，就去parentWebApplication找
+                if (bd == null) {
+                    return null;
+                }
                 singleton=createBean(bd);
                 this.registerBean(beanName, singleton);
 
@@ -58,9 +62,9 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
             }
 
         }
-        if (singleton == null) {
-            throw new BeansException("bean is null.");
-        }
+//        if (singleton == null) {
+//            throw new BeansException("bean is null.");
+//        }
         return singleton;
     }
 
@@ -169,7 +173,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 
             //handle constructor
             ConstructorArgumentValues argumentValues = bd.getConstructorArgumentValues();
-            if (!argumentValues.isEmpty()) {
+            if (argumentValues != null && !argumentValues.isEmpty()) {
                 Class<?>[] paramTypes = new Class<?>[argumentValues.getArgumentCount()];
                 Object[] paramValues =   new Object[argumentValues.getArgumentCount()];
                 for (int i=0; i<argumentValues.getArgumentCount(); i++) {
@@ -230,7 +234,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
         //handle properties
         System.out.println("handle properties for bean : " + bd.getId());
         PropertyValues propertyValues = bd.getPropertyValues();
-        if (!propertyValues.isEmpty()) {
+        if (propertyValues != null && !propertyValues.isEmpty()) {
             for (int i=0; i<propertyValues.size(); i++) {
                 PropertyValue propertyValue = propertyValues.getPropertyValueList().get(i);
                 String pName = propertyValue.getName();

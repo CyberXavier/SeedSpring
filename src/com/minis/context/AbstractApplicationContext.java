@@ -70,15 +70,15 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
     // 定义为abstract增强可扩展性
     //注册监听者
-    abstract void registerListeners();
+    public abstract void registerListeners();
     //初始化事件发布者
-    abstract void initApplicationEventPublisher();
+    public abstract void initApplicationEventPublisher();
     //处理 Bean 以及对 Bean 的状态进行一些操作
-    abstract void postProcessBeanFactory(ConfigurableListableBeanFactory bf);
-    abstract void registerBeanPostProcessors(ConfigurableListableBeanFactory bf);
+    public abstract void postProcessBeanFactory(ConfigurableListableBeanFactory bf);
+    public abstract void registerBeanPostProcessors(ConfigurableListableBeanFactory bf);
     // 将初始化完毕的 Bean 进行应用上下文刷新以及完成刷新后进行自定义操作
-    abstract void onRefresh();
-    abstract void finishRefresh();
+    public abstract void onRefresh();
+    public abstract void finishRefresh();
 
     @Override
     public void registerSingleton(String beanName, Object singletonObject) {
