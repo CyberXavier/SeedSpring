@@ -91,7 +91,6 @@ public class DispatcherServlet extends HttpServlet {
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			} catch (BeansException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
     	}

@@ -107,7 +107,6 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
             try {
                 getBean(name);
             } catch (BeansException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
