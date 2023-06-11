@@ -103,7 +103,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
     public void registerBeanDefinition(String name, BeanDefinition bd) {
         this.beanDefinitionMap.put(name,bd);
         this.beanDefinitionNames.add(name);
-        if (!bd.isLazyInit()) { // 有可能这个第三方Bean的BeanDefinition还没有实例化
+        if (!bd.isLazyInit()) {
             try {
                 getBean(name);
             } catch (BeansException e) {

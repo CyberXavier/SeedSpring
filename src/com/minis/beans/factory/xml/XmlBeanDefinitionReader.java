@@ -70,7 +70,8 @@ public class XmlBeanDefinitionReader {
 
             String[] refArray = refs.toArray(new String[0]);
             beanDefinition.setDependsOn(refArray);
-
+            // TODO 等到所有的BeanDefinition都加载好了再调用register方法，否则循环依赖时geanBean会报错，
+            //  因为此时依赖的beanDefinition还不存在！
             this.bf.registerBeanDefinition(beanID,beanDefinition);
         }
     }
