@@ -54,7 +54,10 @@ public class DefaultObjectMapper implements ObjectMapper{
             type = field.getType();
 
             // 针对不同数据类型进行格式转化
-            if (value instanceof Date) {
+            if (value == null) {
+                strValue = "";
+            }
+            else if (value instanceof Date) {
                 LocalDate localDate = ((Date) value).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 strValue = localDate.format(this.dateTimeFormatter);
             }

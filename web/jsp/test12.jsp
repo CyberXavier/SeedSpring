@@ -5,12 +5,16 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>minis request</title>
+<title>test12</title>
 </head>
 <body>
 
-
-<%= request.getAttribute("msg").toString() %>
+<span>
+    score : <%= request.getAttribute("score").toString() %>
+</span>
+<span>
+    money : <%= request.getAttribute("money").toString() %>
+</span>
 
 </body>
 </html>
