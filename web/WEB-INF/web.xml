@@ -8,7 +8,7 @@
         <param-value>applicationContext.xml</param-value>
     </context-param>
     <listener>
-        <listener-class>com.minis.web.ContextLoaderListener</listener-class>
+        <listener-class>com.minis.web.context.ContextLoaderListener</listener-class>
     </listener>
     <servlet>
         <servlet-name>minisMVC</servlet-name>

@@ -1,7 +1,7 @@
 package com.test;
 
 import com.minis.beans.factory.annotation.Autowired;
-import com.minis.web.RequestMapping;
+import com.minis.web.bind.annotation.RequestMapping;
 import com.test.service.BaseService;
 
 public class HelloWorldBean {

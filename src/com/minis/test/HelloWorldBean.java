@@ -1,6 +1,6 @@
 package com.minis.test;
 
-//import com.minis.web.RequestMapping;
+//import com.minis.web.bind.annotation.RequestMapping;
 
 
 public class HelloWorldBean {
