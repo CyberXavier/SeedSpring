@@ -5,10 +5,15 @@ import com.minis.context.ApplicationContext;
 import com.minis.context.ApplicationContextAware;
 import com.minis.http.converter.HttpMessageConverter;
 import com.minis.utils.StringUtils;
+import com.minis.utils.WrapperClassUtils;
+import com.minis.web.bind.DefaultParameterValueHandler;
+import com.minis.web.bind.ParameterValueHandler;
 import com.minis.web.bind.support.WebBindingInitializer;
 import com.minis.web.bind.WebDataBinder;
 import com.minis.web.bind.support.WebDataBinderFactory;
 import com.minis.web.bind.annotation.ResponseBody;
+import com.minis.web.method.DefaultParameterNameDiscoverer;
+import com.minis.web.method.ParameterNameDiscoverer;
 import com.minis.web.servlet.HandlerAdapter;
 import com.minis.web.method.HandlerMethod;
 import com.minis.web.servlet.ModelAndView;
@@ -29,6 +34,8 @@ public class RequestMappingHandlerAdapter implements HandlerAdapter, Application
 
     private HttpMessageConverter messageConverter = null;
 
+    private ParameterValueHandler parameterValueHandler = null;
+
     public HttpMessageConverter getMessageConverter() {
         return messageConverter;
     }
@@ -38,6 +45,7 @@ public class RequestMappingHandlerAdapter implements HandlerAdapter, Application
     }
 
     public RequestMappingHandlerAdapter() {
+        this.parameterValueHandler = new DefaultParameterValueHandler();
     }
 
     @Override
@@ -66,42 +74,13 @@ public class RequestMappingHandlerAdapter implements HandlerAdapter, Application
         Parameter[] methodParameters = handlerMethod.getMethod().getParameters();
         Object[] methodParamObjs = new Object[methodParameters.length];
 
-        // 取出request中全部参数
-        Map<String, String[]> parameterMap = request.getParameterMap();
-        List<String[]> parameterValueList = new ArrayList<>(parameterMap.size());
-        for (String[] str : parameterMap.values()) {
-            parameterValueList.add(str);
-        }
-
         int i = 0;
         //对调用方法里的每一个参数，处理绑定
         for (Parameter methodParameter : methodParameters) {
             // 判断是否为基本数据类型：
-            if (methodParameter.getType().isPrimitive()){
-                String paramValue = parameterValueList.get(i)[0];
-                // 参数类型
-                Class<?> paramType = methodParameter.getType();
-                // 判断参数类型
-                Object tempValue = null;
-                if (paramType == int.class || paramType == Integer.class) {
-                    tempValue = Integer.parseInt(paramValue);
-                }
-                else if (paramType == long.class || paramType == Long.class) {
-                    tempValue = Long.parseLong(paramValue);
-                }
-                else if (paramType == double.class || paramType == Double.class) {
-                    tempValue = Double.parseDouble(paramValue);
-                }
-                else if (paramType == float.class || paramType == Float.class) {
-                    tempValue = Float.parseFloat(paramValue);
-                }
-                else if (paramType == boolean.class || paramType == Boolean.class) {
-                    tempValue = Boolean.parseBoolean(paramValue);
-                }
-                else {
-                    throw new IllegalArgumentException("暂不支持{ " + paramType + " },这种类型！");
-                }
-                methodParamObjs[i] = tempValue;
+            if (WrapperClassUtils.isWrapperClass(methodParameter.getType())){
+                Object handlerObj = this.parameterValueHandler.handler(methodParameter, request);
+                methodParamObjs[i] = handlerObj;
             }
             else if (methodParameter.getType()!=HttpServletRequest.class && methodParameter.getType()!=HttpServletResponse.class){
                 Object methodParamObj = methodParameter.getType().newInstance();

@@ -2,6 +2,7 @@ package com.test.controller;
 
 import com.minis.beans.factory.annotation.Autowired;
 import com.minis.web.bind.annotation.RequestMapping;
+import com.minis.web.bind.annotation.RequestParam;
 import com.minis.web.bind.annotation.ResponseBody;
 import com.minis.web.servlet.ModelAndView;
 import com.test.entity.Student;
@@ -101,6 +102,36 @@ public class HelloWorldBean {
 		map.put("money", student.getMoney());
 		ModelAndView mv = new ModelAndView("test12",map);
 		return mv;
+	}
+
+	@RequestMapping("/test14")
+	public ModelAndView doTest14(@RequestParam(value = "s1") double score, float money){
+		Student student = new Student();
+		student.setScore(score);
+		student.setMoney(money);
+		Map<String, Object> map = new HashMap<>();
+		map.put("score", student.getScore());
+		map.put("money", student.getMoney());
+		ModelAndView mv = new ModelAndView("test12",map);
+		return mv;
+	}
+
+	@RequestMapping("/test15")
+	@ResponseBody
+	public Student doTest15(@RequestParam("ID") Integer id,
+							@RequestParam(value = "myName") String name,
+							double testScore,
+							Student student){
+
+		System.out.println("money : " + student.getMoney());
+		System.out.println("birthday : " + student.getBirthday());
+		System.out.println("score : " + student.getScore());
+		System.out.println("id : " + student.getId());
+		System.out.println("name : " + student.getName());
+		student.setId(id);
+		student.setName(name);
+		student.setScore(testScore);
+		return student;
 	}
 
 }

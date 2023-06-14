@@ -46,16 +46,20 @@ public class BeanWrapperImpl extends AbstractPropertyAccessor {
     public void setPropertyValue(PropertyValue pv) {
         //拿到参数处理器
         BeanPropertyHandler propertyHandler = new BeanPropertyHandler(pv.getName());
-        PropertyEditor pe = this.getCustomEditor(propertyHandler.getPropertyClz());
-        if (pe == null) {
-            pe = this.getDefaultEditors(propertyHandler.getPropertyClz());
-        }
-        if (pe != null) {
-            pe.setAsText((String) pv.getValue());
-            propertyHandler.setValue(pe.getValue());
-        }
-        else {
-            propertyHandler.setValue(pe.getValue());
+        // 判断当前传入的参数是否符合target字段
+        if (propertyHandler.isValid()) {
+            propertyHandler.initGetterAndSetter(); // 初始化getter和setter方法
+            PropertyEditor pe = this.getCustomEditor(propertyHandler.getPropertyClz());
+            if (pe == null) {
+                pe = this.getDefaultEditors(propertyHandler.getPropertyClz());
+            }
+            if (pe != null) {
+                pe.setAsText((String) pv.getValue());
+                propertyHandler.setValue(pe.getValue());
+            }
+            else {
+                propertyHandler.setValue(pe.getValue());
+            }
         }
     }
 
@@ -64,10 +68,24 @@ public class BeanWrapperImpl extends AbstractPropertyAccessor {
         Method writeMethod = null;
         Method readMethod = null;
         Class<?> propertyClz = null;
+        String propertyName = "";
         public Class<?> getPropertyClz(){
             return this.propertyClz;
         }
         public BeanPropertyHandler(String propertyName){
+            this.propertyName = propertyName;
+        }
+
+        public boolean isValid(){
+            Field field = null;
+            try {
+                field = clz.getDeclaredField(propertyName);
+            } catch (NoSuchFieldException e) {
+                return false;
+            }
+            return true;
+        }
+        public void initGetterAndSetter(){
             try {
                 // 获取target参数对应的属性及类型
                 Field field = clz.getDeclaredField(propertyName);
