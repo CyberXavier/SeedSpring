@@ -27,6 +27,12 @@ public class SingleConnectionDataSource implements DataSource {
 
     public void setDriverClassName(String driverClassName) {
         this.driverClassName = driverClassName;
+        try {
+            Class.forName(this.driverClassName);
+        }
+        catch (ClassNotFoundException ex) {
+            throw new IllegalStateException("Could not load JDBC driver class [" + driverClassName + "]", ex);
+        }
     }
 
     public String getUrl() {
@@ -72,11 +78,6 @@ public class SingleConnectionDataSource implements DataSource {
     }
 
     private Connection getConnectionFromDriver(String username, String password) throws SQLException {
-        try {
-            Class.forName(this.driverClassName);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
         Properties mergedProps = new Properties();
         Properties connProps = getConnectionProperties();
         if (connProps != null) {

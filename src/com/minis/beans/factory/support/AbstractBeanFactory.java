@@ -241,7 +241,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
                 Object pValue = propertyValue.getValue();
                 boolean isRef = propertyValue.getIsRef();
                 Class<?>[] paramTypes = new Class<?>[1];
-                Object[] paramValues =   new Object[1];
+                Object[] paramValues = new Object[1];
                 if (!isRef) {
                     if ("String".equals(pType) || "java.lang.String".equals(pType)) {
                         paramTypes[0] = String.class;
@@ -251,12 +251,14 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
                     }
                     else if ("int".equals(pType)) {
                         paramTypes[0] = int.class;
+                        paramValues[0] = Integer.parseInt((String) pValue);
                     }
                     else {
                         paramTypes[0] = String.class;
                     }
-
-                    paramValues[0] = pValue;
+                    if (paramValues[0] == null){
+                        paramValues[0] = pValue;
+                    }
                 }
                 else { //is ref, create the dependent beans
                     try {

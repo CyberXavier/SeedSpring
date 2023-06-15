@@ -2,9 +2,12 @@ package com.test.service;
 
 import com.minis.beans.factory.annotation.Autowired;
 import com.minis.jdbc.core.JdbcTemplate;
+import com.minis.jdbc.core.RowMapper;
 import com.test.entity.User;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 public class UserService {
 
@@ -42,6 +45,23 @@ public class UserService {
                     }
                     return rtnUser;
                 });
+    }
+
+    public List<User> getUsers(int userId){
+        final String sql = "select id, name, birthday from users where id>?";
+        return (List<User>) jdbcTemplate.query(sql, new Object[]{new Integer(userId)},
+                new RowMapper<User>() {
+                    @Override
+                    public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+                        User rtnUser = new User();
+                        rtnUser.setId(rs.getInt("id"));
+                        rtnUser.setName(rs.getString("name"));
+                        rtnUser.setBirthday(new java.util.Date(rs.getDate("birthday").getTime()));
+
+                        return rtnUser;
+                    }
+                }
+        );
     }
 
 }
