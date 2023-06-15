@@ -2,9 +2,12 @@ package com.minis.utils;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -58,7 +61,11 @@ public class DefaultObjectMapper implements ObjectMapper{
                 strValue = "";
             }
             else if (value instanceof Date) {
-                LocalDate localDate = ((Date) value).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                Date tempValue = (Date) value;
+                Timestamp timestamp = new Timestamp(tempValue.getTime());
+                LocalDate localDate = timestamp.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//                LocalDate localDate = ((Date) value).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//                strValue = localDate.format(this.dateTimeFormatter);
                 strValue = localDate.format(this.dateTimeFormatter);
             }
             else if (value instanceof BigDecimal || value instanceof Double || value instanceof Float) {
