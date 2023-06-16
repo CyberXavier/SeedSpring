@@ -243,22 +243,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
                 Class<?>[] paramTypes = new Class<?>[1];
                 Object[] paramValues = new Object[1];
                 if (!isRef) {
-                    if ("String".equals(pType) || "java.lang.String".equals(pType)) {
-                        paramTypes[0] = String.class;
-                    }
-                    else if ("Integer".equals(pType) || "java.lang.Integer".equals(pType)) {
-                        paramTypes[0] = Integer.class;
-                    }
-                    else if ("int".equals(pType)) {
-                        paramTypes[0] = int.class;
-                        paramValues[0] = Integer.parseInt((String) pValue);
-                    }
-                    else {
-                        paramTypes[0] = String.class;
-                    }
-                    if (paramValues[0] == null){
-                        paramValues[0] = pValue;
-                    }
+                    parameterTypesValuesSetter(paramTypes, paramValues, pType, pValue);
                 }
                 else { //is ref, create the dependent beans
                     try {
@@ -297,6 +282,57 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
             }
         }
 
+    }
+
+    private void parameterTypesValuesSetter(Class<?>[] paramTypes, Object[] paramValues, String pType, Object pValue){
+        if ("String".equals(pType) || "java.lang.String".equals(pType)) {
+            paramTypes[0] = String.class;
+            paramValues[0] = pValue;
+        }
+        else if ("Integer".equals(pType) || "java.lang.Integer".equals(pType)) {
+            paramTypes[0] = Integer.class;
+            paramValues[0] = Integer.parseInt((String) pValue);
+        }
+        else if ("int".equals(pType)) {
+            paramTypes[0] = int.class;
+            paramValues[0] = Integer.parseInt((String) pValue);
+        }
+        else if ("Long".equals(pType) || "java.lang.Long".equals(pType)) {
+            paramTypes[0] = Long.class;
+            paramValues[0] = Long.parseLong((String) pValue);
+        }
+        else if ("long".equals(pType)) {
+            paramTypes[0] = long.class;
+            paramValues[0] = Long.parseLong((String) pValue);
+        }
+        else if ("Double".equals(pType) || "java.lang.Double".equals(pType)) {
+            paramTypes[0] = Double.class;
+            paramValues[0] = Double.parseDouble((String) pValue);
+        }
+        else if ("double".equals(pType)) {
+            paramTypes[0] = double.class;
+            paramValues[0] = Double.parseDouble((String) pValue);
+        }
+        else if ("Float".equals(pType) || "java.lang.Float".equals(pType)) {
+            paramTypes[0] = Float.class;
+            paramValues[0] = Float.parseFloat((String) pValue);
+        }
+        else if ("float".equals(pType)) {
+            paramTypes[0] = float.class;
+            paramValues[0] = Float.parseFloat((String) pValue);
+        }
+        else if ("Boolean".equals(pType) || "java.lang.Boolean".equals(pType)) {
+            paramTypes[0] = Boolean.class;
+            paramValues[0] = Boolean.parseBoolean((String) pValue);
+        }
+        else if ("boolean".equals(pType)) {
+            paramTypes[0] = boolean.class;
+            paramValues[0] = Boolean.parseBoolean((String) pValue);
+        }
+        else {
+            paramTypes[0] = String.class;
+            paramValues[0] = pValue;
+        }
     }
 
     abstract public Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, String beanName)
