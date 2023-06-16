@@ -22,6 +22,15 @@ public class UserController {
         return userInfo;
     }
 
+    @RequestMapping("/updateUserInfo")
+    public ModelAndView updateUserInfo(int userId){
+        int res = userService.updateUserInfo(userId);
+        Map<String, Integer> map = new HashMap<>();
+        map.put("msg", res);
+        ModelAndView mv = new ModelAndView("test",map);
+        return mv;
+    }
+
     @RequestMapping("/getUser")
     @ResponseBody
     public User getUserByList(int userId){
@@ -41,6 +50,5 @@ public class UserController {
         ModelAndView mv = new ModelAndView("showUserList", map);
         return mv;
     }
-
 
 }

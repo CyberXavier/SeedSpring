@@ -12,17 +12,41 @@
     </bean>
     <bean id="baseservice" class="com.test.service.BaseService" />
     <bean id="userService" class="com.test.service.UserService"/>
+    <bean id="newUserService" class="com.test.service.NewUserService"/>
+
+    <bean id="readDataSource" class="com.minis.jdbc.pool.PooledDataSource">
+        <property type="String" name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property type="String" name="url" value="jdbc:mysql://localhost:3306/mytest"/>
+        <property type="String" name="username" value="root"/>
+        <property type="String" name="password" value="12345678"/>
+        <property type="int" name="initialSize" value="1"/>
+        <property type="long" name="maxWait" value="1000"/>
+    </bean>
+
+    <bean id="writeDataSource" class="com.minis.jdbc.pool.PooledDataSource">
+        <property type="String" name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property type="String" name="url" value="jdbc:mysql://localhost:3306/mytest"/>
+        <property type="String" name="username" value="root"/>
+        <property type="String" name="password" value="12345678"/>
+        <property type="int" name="initialSize" value="1"/>
+        <property type="long" name="maxWait" value="1000"/>
+    </bean>
 
     <bean id="dataSource" class="com.minis.jdbc.pool.PooledDataSource">
         <property type="String" name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
         <property type="String" name="url" value="jdbc:mysql://localhost:3306/mytest"/>
         <property type="String" name="username" value="root"/>
         <property type="String" name="password" value="12345678"/>
-        <property type="int" name="initialSize" value="3"/>
+        <property type="int" name="initialSize" value="1"/>
+        <property type="long" name="maxWait" value="1000"/>
     </bean>
 
     <bean id="jdbcTemplate" class="com.minis.jdbc.core.JdbcTemplate">
         <property type="javax.sql.DataSource" name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="com.minis.batis.DefaultSqlSessionFactory" init-method="init">
+        <property type="String" name="mapperLocations" value="mapper"/>
     </bean>
 
     <bean id="handlerMapping" class="com.minis.web.method.annotation.RequestMappingHandlerMapping"/>

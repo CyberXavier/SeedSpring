@@ -7,6 +7,7 @@ import com.minis.beans.factory.config.ConstructorArgumentValue;
 import com.minis.beans.factory.config.ConstructorArgumentValues;
 import com.minis.beans.factory.support.AbstractBeanFactory;
 import com.minis.core.Resource;
+import com.minis.utils.StringUtils;
 import org.dom4j.Element;
 
 import java.util.ArrayList;
@@ -30,7 +31,11 @@ public class XmlBeanDefinitionReader {
             Element element = (Element) resource.next();
             String beanID = element.attributeValue("id");
             String beanClassName = element.attributeValue("class");
+            String initMethodName = element.attributeValue("init-method");
             BeanDefinition beanDefinition = new BeanDefinition(beanID, beanClassName);
+            if (!StringUtils.isEmpty(initMethodName)) {
+                beanDefinition.setInitMethodName(initMethodName);
+            }
 
             //handle constructor
             List<Element> constructorElements = element.elements("constructor-arg");

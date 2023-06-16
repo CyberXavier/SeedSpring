@@ -11,15 +11,14 @@ public class PooledConnection implements Connection {
 
     private Connection connection;
 
-    private boolean active;
+    private PooledDataSource pooledDataSource;
 
     public PooledConnection() {
-
     }
 
-    public PooledConnection(Connection connection, boolean active){
+    public PooledConnection(Connection connection, PooledDataSource pooledDataSource){
         this.connection = connection;
-        this.active = active;
+        this.pooledDataSource = pooledDataSource;
     }
 
     public Connection getConnection() {
@@ -30,13 +29,10 @@ public class PooledConnection implements Connection {
         this.connection = connection;
     }
 
-    public boolean isActive(){return active;}
-
-    public void setActive(boolean active) {this.active = active;}
-
     @Override
     public void close() throws SQLException {
-        this.active = false;
+        PooledConnection pooledConnection = this.pooledDataSource.busy.poll();
+        this.pooledDataSource.idle.offer(pooledConnection);
     }
 
     @Override

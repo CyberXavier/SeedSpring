@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<mapper namespace="com.test.entity.User">
+    <select id="getUserInfo" parameterType="java.lang.Integer" resultType="com.test.entity.User">
+        select id, name, birthday from users where id = ?;
+    </select>
+
+    <update id="updateUserInfo" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        update users set name = ? where id = ?;
+    </update>
+
+    <insert id="insertUserInfo" parameterType="com.test.entity.User" resultType="java.lang.Integer">
+        insert into users(id,name,birthday) values(?,?,?);
+    </insert>
+
+    <delete id="deleteUserInfo" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        delete from users where id = ?;
+    </delete>
+</mapper>

@@ -1,8 +1,11 @@
 package com.test.service;
 
+import com.minis.batis.SqlSessionFactory;
 import com.minis.beans.factory.annotation.Autowired;
 import com.minis.jdbc.core.JdbcTemplate;
 import com.minis.jdbc.core.RowMapper;
+import com.minis.web.bind.annotation.RequestMapping;
+import com.minis.web.bind.annotation.ResponseBody;
 import com.test.entity.User;
 
 import java.sql.ResultSet;
@@ -64,4 +67,12 @@ public class UserService {
         );
     }
 
+    public int updateUserInfo(int userId){
+        final String sql = "update users set name = ? where id = ?";
+        Object[] args = new Object[2];
+        args[0] = "xavier";
+        args[1] = 1;
+        int result = (int) jdbcTemplate.update(sql, args);
+        return result;
+    }
 }
