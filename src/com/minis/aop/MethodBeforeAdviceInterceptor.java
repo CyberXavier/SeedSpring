@@ -1,0 +1,18 @@
+package com.minis.aop;
+
+import java.lang.reflect.Method;
+
+public class MethodBeforeAdviceInterceptor implements MethodInterceptor, BeforeAdvice{
+
+    private final MethodBeforeAdvice advice;
+
+    public MethodBeforeAdviceInterceptor(MethodBeforeAdvice advice){
+        this.advice = advice;
+    }
+
+    @Override
+    public Object invoke(MethodInvocation mi) throws Throwable {
+        this.advice.before(mi.getMethod(), mi.getArguments(), mi.getThis());
+        return mi.proceed();
+    }
+}

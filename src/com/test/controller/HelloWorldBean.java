@@ -8,6 +8,7 @@ import com.minis.web.servlet.ModelAndView;
 import com.test.entity.Student;
 import com.test.entity.User;
 import com.test.service.BaseService;
+import com.test.service.IAction;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +19,20 @@ import java.util.Map;
 public class HelloWorldBean {
 	@Autowired
 	BaseService baseservice;
+
+	@Autowired
+	IAction action;
+
+	@RequestMapping("/testaop")
+	public void doTestAop(HttpServletRequest request, HttpServletResponse response){
+		action.doAction();
+		String str = "test aop, hello world!";
+		try {
+			response.getWriter().write(str);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 	@RequestMapping("/test2")
 	public void doTest2(HttpServletRequest request, HttpServletResponse response) {

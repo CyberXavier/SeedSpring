@@ -3,6 +3,9 @@ package com.minis.beans.factory.support;
 import com.minis.beans.BeansException;
 import com.minis.beans.PropertyValue;
 import com.minis.beans.PropertyValues;
+import com.minis.beans.factory.BeanFactory;
+import com.minis.beans.factory.BeanFactoryAware;
+import com.minis.beans.factory.FactoryBean;
 import com.minis.beans.factory.config.BeanDefinition;
 import com.minis.beans.factory.config.ConfigurableBeanFactory;
 import com.minis.beans.factory.config.ConstructorArgumentValue;
@@ -16,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory,BeanDefinitionRegistry {
+public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport implements ConfigurableBeanFactory,BeanDefinitionRegistry {
     protected Map<String, BeanDefinition> beanDefinitionMap = new HashMap<>(256);
     protected List<String> beanDefinitionNames = new ArrayList<>();
     private final Map<String, Object> earlySingletonObjects = new HashMap<String, Object>(16);
@@ -42,29 +45,42 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
                 System.out.println("get bean null -------------- " + beanName);
                 BeanDefinition bd = beanDefinitionMap.get(beanName);
                 // 在webApplication环境中没有当前bean的定义，就去parentWebApplication找
-                if (bd == null) {
+                if (bd != null) {
+                    singleton=createBean(bd);
+
+                    this.registerBean(beanName, singleton);
+                    if (singleton instanceof BeanFactoryAware) {
+                        ((BeanFactoryAware) singleton).setBeanFactory(this);
+                    }
+
+                    //beanpostprocessor
+                    //step 1 : postProcessBeforeInitialization
+                    applyBeanPostProcessorsBeforeInitialization(singleton, beanName);
+
+                    //step 2 : init-method
+                    if (bd.getInitMethodName() != null && !bd.getInitMethodName().equals("")) {
+                        invokeInitMethod(bd, singleton);
+                    }
+
+                    //step 3 : postProcessAfterInitialization
+                    applyBeanPostProcessorsAfterInitialization(singleton, beanName);
+                }else {
                     return null;
                 }
-                singleton=createBean(bd);
-                this.registerBean(beanName, singleton);
-
-                //beanpostprocessor
-                //step 1 : postProcessBeforeInitialization
-                applyBeanPostProcessorsBeforeInitialization(singleton, beanName);
-
-                //step 2 : init-method
-                if (bd.getInitMethodName() != null && !bd.getInitMethodName().equals("")) {
-                    invokeInitMethod(bd, singleton);
-                }
-
-                //step 3 : postProcessAfterInitialization
-                applyBeanPostProcessorsAfterInitialization(singleton, beanName);
             }
 
+        } else {
+            System.out.println("bean exist -------------- " + beanName + "----------------"+singleton);
         }
-//        if (singleton == null) {
-//            throw new BeansException("bean is null.");
-//        }
+
+        // process Factory bean
+        if (singleton instanceof FactoryBean) {
+            System.out.println("factory bean -------------- " + beanName + "----------------"+singleton);
+            return this.getObjectForBeanInstance(singleton, beanName);
+        }else {
+            System.out.println("normal bean -------------- " + beanName + "----------------"+singleton);
+        }
+
         return singleton;
     }
 
@@ -333,6 +349,25 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
             paramTypes[0] = String.class;
             paramValues[0] = pValue;
         }
+    }
+
+    private Object getObjectForBeanInstance(Object beanInstance, String beanName) {
+        // Now we have the bean instance, which may be a normal bean or a FactoryBean.
+        if (!(beanInstance instanceof FactoryBean)) {
+            return beanInstance;
+        }
+
+        Object object = null;
+        FactoryBean<?> factory = null;
+
+        try {
+            factory = getFactoryBean(beanName, beanInstance);
+        } catch (BeansException e) {
+            throw new RuntimeException(e);
+        }
+
+        object = getObjectFromFactoryBean(factory, beanName);
+        return object;
     }
 
     abstract public Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, String beanName)
