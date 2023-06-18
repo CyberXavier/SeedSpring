@@ -24,13 +24,25 @@ public class HelloWorldBean {
 	IAction action;
 
 	@RequestMapping("/testaop")
-	public void doTestAop(HttpServletRequest request, HttpServletResponse response){
+	public void doTestAop(HttpServletRequest request, HttpServletResponse response) {
 		action.doAction();
+
 		String str = "test aop, hello world!";
 		try {
 			response.getWriter().write(str);
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			e.printStackTrace();
+		}
+	}
+	@RequestMapping("/testaop2")
+	public void doTestAop2(HttpServletRequest request, HttpServletResponse response) {
+		action.doSomething();
+
+		String str = "test aop, hello world!";
+		try {
+			response.getWriter().write(str);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

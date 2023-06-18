@@ -15,10 +15,14 @@
     <bean id="newUserService" class="com.test.service.NewUserService"/>
 
     <bean id="myBeforeAdvice" class="com.test.service.MyBeforeAdvice"/>
+    <bean id="advisor" class="com.minis.aop.NameMatchMethodPointcutAdvisor">
+        <property type="com.minis.aop.Advice" name="advice" ref="myBeforeAdvice"/>
+        <property type="java.lang.String" name="mappedName" value="do*"/>
+    </bean>
     <bean id="realaction" class="com.test.service.Action1"/>
     <bean id="action" class="com.minis.aop.ProxyFactoryBean">
         <property type="java.lang.Object" name="target" ref="realaction"/>
-        <property type="String" name="interceptorName" value="myBeforeAdvice"/>
+        <property type="String" name="interceptorName" value="advisor"/>
     </bean>
 
     <bean id="readDataSource" class="com.minis.jdbc.pool.PooledDataSource">
