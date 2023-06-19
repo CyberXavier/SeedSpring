@@ -23,6 +23,10 @@ public class NameMatchMethodPointcutAdvisor implements PointcutAdvisor{
         this.methodInterceptor = methodInterceptor;
     }
 
+    /**
+     * 通过配置文件自动注入
+     * @param advice
+     */
     public void setAdvice(Advice advice){
         this.advice = advice;
 

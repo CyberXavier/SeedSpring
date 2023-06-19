@@ -33,6 +33,7 @@ public abstract class AbstractAutowireCapableBeanFactory
                 return result;
             }
         }
+        existingBean = result;
         return result;
     }
 

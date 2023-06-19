@@ -49,13 +49,14 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
                     singleton=createBean(bd);
 
                     this.registerBean(beanName, singleton);
+                    // ProxyFactoryBean需要设置BeanFactory
                     if (singleton instanceof BeanFactoryAware) {
                         ((BeanFactoryAware) singleton).setBeanFactory(this);
                     }
 
                     //beanpostprocessor
                     //step 1 : postProcessBeforeInitialization
-                    applyBeanPostProcessorsBeforeInitialization(singleton, beanName);
+                    singleton = applyBeanPostProcessorsBeforeInitialization(singleton, beanName);
 
                     //step 2 : init-method
                     if (bd.getInitMethodName() != null && !bd.getInitMethodName().equals("")) {
@@ -64,6 +65,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
                     //step 3 : postProcessAfterInitialization
                     applyBeanPostProcessorsAfterInitialization(singleton, beanName);
+
+                    //将代理类放入IOC中，否则Autowired注入的将会是非代理类
+                    this.removeSingleton(beanName);
+                    this.registerBean(beanName, singleton);
+
                 }else {
                     return null;
                 }
