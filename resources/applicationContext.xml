@@ -17,7 +17,7 @@
     <bean id="action" class="com.test.service.Action1"/>
     <bean id="action2" class="com.test.service.Action2"/>
 
-    <bean id="myBeforeAdvice" class="com.test.service.MyBeforeAdvice"/>
+    <bean id="myBeforeAdvice" class="com.test.advice.MyBeforeAdvice"/>
     <bean id="advisor" class="com.minis.aop.NameMatchMethodPointcutAdvisor">
         <property type="com.minis.aop.Advice" name="advice" ref="myBeforeAdvice"/>
         <property type="java.lang.String" name="mappedName" value="do*"/>
@@ -35,6 +35,14 @@
 <!--        <property type="java.lang.Object" name="target" ref="realaction"/>-->
 <!--        <property type="String" name="interceptorName" value="advisor"/>-->
 <!--    </bean>-->
+
+
+
+    <bean id="transactionInterceptor" class="TransactionInterceptor" >
+        <property type="TransactionManager" name="transactionManager" ref="txManager" />
+    </bean>
+    <bean id="txManager" class="TransactionManager">
+    </bean>
 
     <bean id="readDataSource" class="com.minis.jdbc.pool.PooledDataSource">
         <property type="String" name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>

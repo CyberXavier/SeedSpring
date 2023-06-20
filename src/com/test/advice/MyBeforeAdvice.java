@@ -1,4 +1,4 @@
-package com.test.service;
+package com.test.advice;
 
 import com.minis.aop.MethodBeforeAdvice;
 

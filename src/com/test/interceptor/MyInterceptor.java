@@ -1,4 +1,4 @@
-package com.test.service;
+package com.test.interceptor;
 
 import com.minis.aop.MethodInterceptor;
 import com.minis.aop.MethodInvocation;
