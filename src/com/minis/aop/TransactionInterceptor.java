@@ -12,11 +12,11 @@ public class TransactionInterceptor implements MethodInterceptor{
         return null;
     }
 
-    public TransactionManager getTxManager() {
+    public TransactionManager getTransactionManager() {
         return transactionManager;
     }
 
-    public void setTxManager(TransactionManager transactionManager) {
+    public void setTransactionManager(TransactionManager transactionManager) {
         this.transactionManager = transactionManager;
     }
 }

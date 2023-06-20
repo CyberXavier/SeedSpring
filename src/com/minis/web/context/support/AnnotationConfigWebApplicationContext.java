@@ -40,11 +40,14 @@ public class AnnotationConfigWebApplicationContext
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+        // 获取xml配置文件中“base-package”参数值(controller的包路径)，加载到内存里
         List<String> packageNames = XmlScanComponentHelper.getNodeValue(xmlPath);
+        // list存的全类名
         List<String> controllerNames = scanPackages(packageNames);
         DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
         this.beanFactory = bf;
         this.beanFactory.setParent(this.parentApplicationContext.getBeanFactory());
+        // 将controller类的全类名存入BeanDefinition
         loadBeanDefinitions(controllerNames);
 
         if (true) {
@@ -61,13 +64,20 @@ public class AnnotationConfigWebApplicationContext
 
     private void loadBeanDefinitions(List<String> controllerNames) {
         for (String controllerName : controllerNames) {
+            // com.test.controller.HelloWorldBean
             String beanID = controllerName;
+            // com.test.controller.HelloWorldBean
             String beanClassName = controllerName;
             BeanDefinition beanDefinition = new BeanDefinition(beanID, beanClassName);
             this.beanFactory.registerBeanDefinition(beanID, beanDefinition);
         }
     }
 
+    /**
+     * 获取controller类的全类名
+     * @param packageNames
+     * @return
+     */
     private List<String> scanPackages(List<String> packageNames) {
         List<String> tempControllerNames = new ArrayList<>();
         for (String packageName : packageNames) {
@@ -77,6 +87,7 @@ public class AnnotationConfigWebApplicationContext
     }
 
     private List<String> scanPackage(String packageName) {
+        // packageName = com.test.controller
         List tempControllerNames = new ArrayList<>();
         URL url = this.getClass().getClassLoader().
                 getResource("/" + packageName.replaceAll("\\.","/"));
@@ -86,6 +97,7 @@ public class AnnotationConfigWebApplicationContext
             if (file.isDirectory()) {
                 scanPackage(packageName + "." + file.getName());
             }else {
+                // com.test.controller.HelloWorldBean
                 String controllerName = packageName + "." + file.getName().replace(".class","");
                 tempControllerNames.add(controllerName);
             }

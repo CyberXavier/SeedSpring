@@ -38,10 +38,10 @@
 
 
 
-    <bean id="transactionInterceptor" class="TransactionInterceptor" >
-        <property type="TransactionManager" name="transactionManager" ref="txManager" />
+    <bean id="transactionInterceptor" class="com.minis.aop.TransactionInterceptor" >
+        <property type="com.minis.aop.TransactionManager" name="transactionManager" ref="transactionManager" />
     </bean>
-    <bean id="txManager" class="TransactionManager">
+    <bean id="transactionManager" class="com.minis.aop.TransactionManager">
     </bean>
 
     <bean id="readDataSource" class="com.minis.jdbc.pool.PooledDataSource">

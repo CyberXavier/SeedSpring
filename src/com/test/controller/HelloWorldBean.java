@@ -80,7 +80,6 @@ public class HelloWorldBean {
 		try {
 			response.getWriter().write(str);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

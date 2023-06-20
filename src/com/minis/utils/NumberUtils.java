@@ -80,7 +80,7 @@ public abstract class NumberUtils {
 	public static <T extends Number> T convertNumberToTargetClass(Number number, Class<T> targetClass)
 			throws IllegalArgumentException {
 
-
+		// 如果 number 是targetClass的实例，则此方法返回 true
 		if (targetClass.isInstance(number)) {
 			return (T) number;
 		}
@@ -194,7 +194,7 @@ public abstract class NumberUtils {
 	@SuppressWarnings("unchecked")
 	public static <T extends Number> T parseNumber(String text, Class<T> targetClass) {
 		String trimmed = StringUtils.trimAllWhitespace(text);
-
+		// decode可以自动解析参数进制
 		if (Byte.class == targetClass) {
 			return (T) (isHexNumber(trimmed) ? Byte.decode(trimmed) : Byte.valueOf(trimmed));
 		}

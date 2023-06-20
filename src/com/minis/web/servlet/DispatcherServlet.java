@@ -103,6 +103,7 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     private void initController() {
+        // 从MVC管理的容器中获取controllerName (com.test.controller.HelloWorldBean)
         this.controllerNames = Arrays.asList(this.webApplicationContext.getBeanDefinitionNames());
         for (String controllerName : this.controllerNames) {
             try {
