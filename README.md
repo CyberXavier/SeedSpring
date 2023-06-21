@@ -1,7 +1,7 @@
 
 
 <div align=center>
-    <font size="70px">SeedSpring</font>
+    <large><b>SeedSpring</b></large>
 </div>
 
 <div align=center>
