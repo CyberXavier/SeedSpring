@@ -10,7 +10,7 @@ public abstract class PatternMatchUtils {
 	 * @param str the String to match
 	 * @return whether the String matches the given pattern
 	 */
-	public static boolean simpleMatch( String pattern,  String str) {
+	public static boolean simpleMatch(String pattern, String str) {
 		if (pattern == null || str == null) {
 			return false;
 		}
