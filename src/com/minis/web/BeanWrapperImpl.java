@@ -46,7 +46,7 @@ public class BeanWrapperImpl extends AbstractPropertyAccessor {
     public void setPropertyValue(PropertyValue pv) {
         //拿到参数处理器
         BeanPropertyHandler propertyHandler = new BeanPropertyHandler(pv.getName());
-        // 判断当前传入的参数是否符合target字段
+        // 判断当前传入的参数是否符合target字段(基本数据类型及其包装类没有getter setter)
         if (propertyHandler.isValid()) {
             propertyHandler.initGetterAndSetter(); // 初始化getter和setter方法
             PropertyEditor pe = this.getCustomEditor(propertyHandler.getPropertyClz());

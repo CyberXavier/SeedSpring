@@ -62,7 +62,7 @@ public class InternalResourceViewResolver implements ViewResolver {
     }
 
     protected View buildView(String viewName) throws Exception {
-        Class<?> viewClass = getViewClass();
+        Class<?> viewClass = getViewClass(); //jstlView
 
         View view = (View) viewClass.newInstance();
         view.setUrl(getPrefix() + viewName + getSuffix());

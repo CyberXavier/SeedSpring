@@ -177,6 +177,7 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     private void render(HttpServletRequest request, HttpServletResponse response, ModelAndView mv) throws Exception {
+        // responseBody或者void两种情况
         if (mv == null) {
             response.getWriter().flush();
             response.getWriter().close();

@@ -54,7 +54,7 @@ public class DefaultSqlSession implements SqlSession{
         MapperNode mapperNode = this.getSqlSessionFactory().getMapperNode(sqlid);
         String sqlType = mapperNode.getSqlType();
         String sql = mapperNode.getSql();
-        if ("0".equals(sqlType)) { //表示read
+        if ("0".equals(sqlType) && this.readDataSource != null) { //表示read
             jdbcTemplate.setDataSource(this.readDataSource);
         }
         return jdbcTemplate.query(sql, args, pstmtcallback);
@@ -65,7 +65,7 @@ public class DefaultSqlSession implements SqlSession{
         MapperNode mapperNode = this.getSqlSessionFactory().getMapperNode(sqlid);
         String sqlType = mapperNode.getSqlType();
         String sql = mapperNode.getSql();
-        if ("0".equals(sqlType)) { //表示read
+        if ("0".equals(sqlType) && this.readDataSource != null) { //表示read
             jdbcTemplate.setDataSource(this.readDataSource);
         }
         return jdbcTemplate.query(sql, args, rowMapper);
@@ -76,7 +76,7 @@ public class DefaultSqlSession implements SqlSession{
         MapperNode mapperNode = this.getSqlSessionFactory().getMapperNode(sqlid);
         String sqlType = mapperNode.getSqlType();
         String sql = mapperNode.getSql();
-        if ("1".equals(sqlType)) { //表示read
+        if ("1".equals(sqlType) && this.writeDataSource != null) { //表示write
             jdbcTemplate.setDataSource(this.writeDataSource);
         }
         return jdbcTemplate.update(sql, args);
@@ -87,7 +87,7 @@ public class DefaultSqlSession implements SqlSession{
         MapperNode mapperNode = this.getSqlSessionFactory().getMapperNode(sqlid);
         String sqlType = mapperNode.getSqlType();
         String sql = mapperNode.getSql();
-        if ("2".equals(sqlType)) { //表示read
+        if ("2".equals(sqlType) && this.writeDataSource != null) { //表示write
             jdbcTemplate.setDataSource(this.writeDataSource);
         }
         return jdbcTemplate.insert(sql, args);
@@ -98,7 +98,7 @@ public class DefaultSqlSession implements SqlSession{
         MapperNode mapperNode = this.getSqlSessionFactory().getMapperNode(sqlid);
         String sqlType = mapperNode.getSqlType();
         String sql = mapperNode.getSql();
-        if ("3".equals(sqlType)) { //表示read
+        if ("3".equals(sqlType) && this.writeDataSource != null) {
             jdbcTemplate.setDataSource(this.writeDataSource);
         }
         return jdbcTemplate.delete(sql, args);

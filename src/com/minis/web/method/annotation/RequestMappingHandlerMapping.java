@@ -43,6 +43,7 @@ public class RequestMappingHandlerMapping implements HandlerMapping, Application
                     if (isRequestMapping) {
                         //如果该方法带有@RequestMapping注解,则建立映射关系
                         String methodName = method.getName();
+                        // 可以通过url 拼接 method(get,post...) 实现根据不同请求类型定位到不同方法
                         String urlMapping = method.getAnnotation(RequestMapping.class).value();
                         this.mappingRegistry.getUrlMappingNames().add(urlMapping);
                         this.mappingRegistry.getMappingObjs().put(urlMapping, obj);

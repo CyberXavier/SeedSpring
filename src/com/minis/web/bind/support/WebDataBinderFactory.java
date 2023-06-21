@@ -10,6 +10,7 @@ public class WebDataBinderFactory {
 		initBinder(wbd, request);
 		return wbd;
 	}
+	// 预留接口
 	protected void initBinder(WebDataBinder dataBinder, HttpServletRequest request){
 	}
 }
