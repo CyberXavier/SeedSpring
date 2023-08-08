@@ -16,6 +16,12 @@
 
 > Spring 是 java 开发的平台，我们常说的 java 编程，其实是在Spring框架上做开发。因此作为专业程序员，深度理解 Spring Framework 是很必要和重要的。对 Spring 这个基础框架的理解，能让我们**以不变应万变，把握住技术快速流变中相对稳定的内核**。
 
+### 系统设计
+#### IOC结构
+<div align=center>
+<img src="./img/IOC.png" width="50%" height="50%">
+</div>
+
 #### SeedSpring 实现了一个简易版本的 Spring 框架，实现了其四大核心部分：IOC容器、MVC、JDBCTemplate 以及 AOP
 
 * 通过**反射**实现了以xml文件为数据源创建Bean，实现了构造器和setter注入，并放入容器中进行管理
