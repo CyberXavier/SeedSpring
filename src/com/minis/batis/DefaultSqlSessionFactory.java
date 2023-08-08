@@ -31,7 +31,7 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory{
     public DefaultSqlSessionFactory(){}
 
     public void init() {
-        scanLocation(this.mapperLocations);
+        scanLocation(this.mapperLocations); //扫描mapper文件夹
         for (Map.Entry<String, MapperNode> entry : this.mapperNodeMap.entrySet()) {
             System.out.println(entry.getKey() + " : " + entry.getValue());
         }

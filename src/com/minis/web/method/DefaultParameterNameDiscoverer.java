@@ -8,6 +8,7 @@ import java.lang.reflect.Parameter;
 public class DefaultParameterNameDiscoverer implements ParameterNameDiscoverer{
     @Override
     public String discover(Parameter parameter) {
+//        boolean annotationPresent = parameter.isAnnotationPresent(RequestParam.class);
         RequestParam annotation = parameter.getDeclaredAnnotation(RequestParam.class);
         String parameterName;
         if (annotation != null) { // 有RequestParam注解

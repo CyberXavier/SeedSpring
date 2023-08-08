@@ -47,7 +47,7 @@ public class PropertyEditorRegistrySupport {
     // 注册自定义转换器
     public void registerCustomEditor(Class<?> requiredType,  PropertyEditor propertyEditor) {
         if (this.customEditors == null) {
-            this.customEditors = new LinkedHashMap<>(16);
+            this.customEditors = new LinkedHashMap<>(16); //保持插入顺序与访问顺序
         }
         this.customEditors.put(requiredType, propertyEditor);
     }

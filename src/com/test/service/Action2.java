@@ -12,5 +12,10 @@ public class Action2 implements IAction {
 		System.out.println("really do something2");
 	}
 
+	@Override
+	public void noAdviceAction() {
+		System.out.println("no advice action2");
+	}
+
 
 }

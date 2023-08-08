@@ -250,11 +250,12 @@ public abstract class NumberUtils {
 				decimalFormat = (DecimalFormat) numberFormat;
 				if (BigDecimal.class == targetClass && !decimalFormat.isParseBigDecimal()) {
 					// 用于设置DecimalFormat类的parse()方法是否返回BigInteger类型的值
-					decimalFormat.setParseBigDecimal(true);
+					decimalFormat.setParseBigDecimal(true); // 转为BigDecimal
 					resetBigDecimal = true;
 				}
 			}
 			try {
+				// 默认转为Double
 				Number number = numberFormat.parse(StringUtils.trimAllWhitespace(text));
 				return convertNumberToTargetClass(number, targetClass);
 			}

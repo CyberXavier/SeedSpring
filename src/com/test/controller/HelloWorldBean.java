@@ -74,6 +74,18 @@ public class HelloWorldBean {
 		}
 	}
 
+	@RequestMapping("/testnoaop")
+	public void testNoAop(HttpServletRequest request, HttpServletResponse response) {
+		action2.noAdviceAction();
+
+		String str = "test aop 4, hello world!";
+		try {
+			response.getWriter().write(str);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	@RequestMapping("/test2")
 	public void doTest2(HttpServletRequest request, HttpServletResponse response) {
 		String str = "test 2, hello world!";
